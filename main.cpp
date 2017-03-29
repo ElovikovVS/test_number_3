@@ -14,6 +14,7 @@ void Not_passed(apprentice app[], int N)
 {
     int buf;
     char *temp = (char*)malloc(20*sizeof(char));
+
 //sort the list alphabetically
     for (int i = 0; i < N; ++i)
         for (int j = 0; j < N; ++j)
@@ -47,16 +48,7 @@ int main()
 {
     apprentice app[500];
     int N;
-    scanf("%i",&N);
-    for (int i = 0; i<N; ++i)
-    {
-        scanf("%s",app[i].Second_Name);
-        scanf("%s",app[i].Name);
-        scanf("%d",&app[i].first_mark);
-        scanf("%d",&app[i].second_mark);
-    }
 
-/*
 //filling list from a file
     FILE *f_in;
     f_in = fopen("input.txt","r");
@@ -66,28 +58,11 @@ int main()
     {
         fscanf(f_in,"%s",app[i].Second_Name);
         fscanf(f_in,"%s",app[i].Name);
-        fscanf(f_in,"%i",app[i].first_mark);
-        fscanf(f_in,"%i",app[i].second_mark);
+        fscanf(f_in,"%i",&app[i].first_mark);
+        fscanf(f_in,"%i",&app[i].second_mark);
     }
-*/
 
-Not_passed(app,N);
-
-
-
-
-
-
-
-/*
-//list entry in the file of students who do not pass the exam
-    FILE *f_out;
-    f_out = fopen("output.txt","w");
-    for (int i = 0; i < N; ++i)
-        if ( app[i].first_mark < 30 && app[i].second_mark < 30)
-        fprintf(f_out,"%s %s %d %d \n", app[i].Second_Name, app[i].Name, app[i].first_mark, app[i].second_mark);
-    fclose(f_out);
-*/
+    Not_passed(app,N);
     system("pause");
     return 1;
 }
