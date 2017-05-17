@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1495004631 source:d:\cppprojects\test2\main.cpp
+	<stdlib.h>
+	<stdio.h>
+	<locale.h>
+	<Windows.h>
+

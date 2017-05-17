@@ -1,68 +1,111 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
-typedef struct apprentice
+typedef struct Node
 {
-    char Second_Name[20];
-    char Name[20];
-    int first_mark;
-    int second_mark;
-};
+    int value;
+    struct Node *next;
+    struct Node *prev;
+} Node;
 
-void Not_passed(apprentice app[], int N)
+int pop(Node **head)
 {
-    int buf;
-    char *temp = (char*)malloc(20*sizeof(char));
+    Node* pred = NULL;
+    int val;
+    if (head == NULL)
+    {
+        exit(-1);
+    }
+    pred = (*head);
+    val = pred->value;
+    (*head) = (*head)->next;
+    if (head != NULL) (*head)->prev = NULL;
+    free(pred);
+    return val;
+}
 
-//sort the list alphabetically
-    for (int i = 0; i < N; ++i)
-        for (int j = 0; j < N; ++j)
+void printLinkedList(const Node *head)
+{
+    if (head == NULL) printf("\n--List is empty, enter at least one item with push--\n");
+    else
+    {
+        while (head)
         {
-            if ( strcmp(app[j].Second_Name, app[i].Second_Name) > 0)
+            printf("%d ", head->value);
+            head = head->next;
+        }
+        printf("\n");
+    }
+}
+
+void my_test_2(Node *head)
+{
+    Node *tmp = head;
+    while(tmp)
+    {
+        if (tmp->value < 0)
+        {
+            if(tmp->next != NULL)
             {
-                strcpy(temp,app[i].Second_Name);
-                strcpy(app[i].Second_Name,app[j].Second_Name);
-                strcpy(app[j].Second_Name,temp);
-
-                strcpy(temp,app[i].Name);
-                strcpy(app[i].Name,app[j].Name);
-                strcpy(app[j].Name,temp);
-
-                buf = app[i].first_mark;
-                app[i].first_mark = app[j].first_mark;
-                app[j].first_mark = buf;
-
-                buf = app[i].second_mark;
-                app[i].second_mark = app[j].second_mark;
-                app[j].second_mark = buf;
+                Node *q = tmp->next;
+                if (q->next == NULL)
+                {
+                    tmp->next =NULL;
+                    free(q);
+                }
+                else
+                {
+                    q = q->next;
+                    q->prev = tmp;
+                    q = tmp->next;
+                    tmp->next = q->next;
+                    free(q);
+                }
             }
         }
-//print list of students who do not pass the exam
-    for (int i = 0; i < N; ++i)
-        if ( app[i].first_mark < 30 || app[i].second_mark < 30)
-            printf("%s %s \n", app[i].Second_Name, app[i].Name);
+        tmp = tmp->next;
+    }
 }
 
 int main()
 {
-    apprentice app[500];
-    int N;
+    int data,count;
+    Node *head = NULL;
 
-//filling list from a file
-    FILE *f_in;
-    f_in = fopen("input.txt","r");
-    fscanf(f_in,"%i",&N);
+    printf("please enter count of elements in spis - ");
+    scanf("%d",&count);
 
-    for (int i = 0; i<N; ++i)
+    printf("please enter value of element - ");
+    scanf("%d",&data);
+
+    Node *tmp = (Node*)malloc(sizeof(Node));
+    tmp->value = data;
+    tmp->next = NULL;
+    tmp->prev = NULL;
+    head = tmp;
+
+    for (int i = 1; i < count; ++i)
     {
-        fscanf(f_in,"%s",app[i].Second_Name);
-        fscanf(f_in,"%s",app[i].Name);
-        fscanf(f_in,"%i",&app[i].first_mark);
-        fscanf(f_in,"%i",&app[i].second_mark);
+        printf("please enter value of element - ");
+        scanf("%d",&data);
+        Node *tmp = (Node*)malloc(sizeof(Node));
+        tmp->value = data;
+        tmp->next = head;
+        tmp->prev = NULL;
+        head->prev = tmp;
+        head = tmp;
     }
+    printLinkedList(head);
+    my_test_2(head);
+    printLinkedList(head);
+    while (head->next)
+    {
+        pop(&head);
+        head = head->next;
+    }
+    free(head);
 
-    Not_passed(app,N);
     system("pause");
-    return 1;
+    return 0;
 }
+
